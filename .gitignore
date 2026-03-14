@@ -3,6 +3,9 @@ dist/
 *.tsbuildinfo
 .DS_Store
 *.Zone.Identifier
+
+# Internal design docs (not for public distribution)
+docs/PERSONA.md
 .env
 .env.*
 !.env.example

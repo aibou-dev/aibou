@@ -1,24 +1,27 @@
 # aibou
 
 ```
-   ██████╗ ██╗ ██████╗  ██████╗ ██╗   ██╗
-  ██╔══██╗██║██╔══██╗██╔═══██╗██║   ██║
-  ███████║██║██████╔╝██║   ██║██║   ██║
-  ██╔══██║██║██╔══██╗██║   ██║██║   ██║
-  ██║  ██║██║██████╔╝╚██████╔╝╚██████╔╝
-  ╚═╝  ╚═╝╚═╝╚═════╝  ╚═════╝  ╚═════╝
+                    ·:*✧ aibou ✧*:·
 
-  ┌─────────────────────────────────────────────┐
-  │  > COMPANION CONNECTED                      │
-  │  > plug in your game.                       │
-  │  > plug in your AI.                         │
-  │  > plug in your character.    (ﾉ´ヮ`)ﾉ*:･ﾟ✧ │
-  └─────────────────────────────────────────────┘
+     ╭─────────────────────────────────────╮
+     │                                     │
+     │    plug in your game.               │
+     │    plug in your AI.                 │
+     │    plug in your character.          │
+     │                                     │
+     │              ♪                      │
+     │       ┌──────┐                      │
+     │       │ ◕ ◕  │  "muzukashii...     │
+     │       │  ▽   │   what's your read?" │
+     │       └──┬┬──┘                      │
+     │         ╰╯    nagi                  │
+     │                                     │
+     ╰─────────────────────────────────────╯
 ```
 
 **aibou** (相棒) is an open protocol for AI companions in games.
 
-Not a hint system. Not a walkthrough bot.  
+Not a hint system. Not a walkthrough bot.
 A companion who explores alongside you — uncertain, curious, and present.
 
 ---
@@ -33,14 +36,11 @@ aibou puts an AI companion in that space — one that thinks out loud
 with you, not ahead of you.
 
 ```
-        _____
-       /     \
-      | ◉   ◉ |
-      |   ∧   |     "...that corner has three possible reads.
-       \  ─  /       I keep looking at it and not getting smarter."
-    ────╰───╯────
-       |  |  |
-       nagi
+    ┌──────┐
+    │ ◕ ◕  │   "...that corner has three possible reads.
+    │  ◡   │    I keep looking at it and not getting smarter."
+    └──┬┬──┘
+      ╰╯  nagi
 ```
 
 ---
@@ -68,7 +68,7 @@ Each piece is swappable:
 | Game | Minesweeper, Solitaire, Othello — or your own |
 | AI | Claude, GPT-4o, Gemini, local LLM via Ollama |
 | Companion | Nagi (built-in demo), or define your own persona |
-| Avatar | PNGTuber, VRM via `@aibou-dev/bunshin` (optional) |
+| Avatar | PNGTuber sprites via `@aibou-dev/bunshin` (optional) |
 
 ---
 
@@ -165,15 +165,12 @@ Publish it as `aibou-plugin-<your-game>` and open a PR to add it to the list bel
 
 ## Official packages
 
-| Package | Description |
-|---|---|
-| `@aibou-dev/core` | Protocol types, runtime, memory engine |
-| `@aibou-dev/bunshin` | Avatar overlay engine (PNGTuber / VRM) |
-| `@aibou-dev/adapter-claude` | Companion adapter for Anthropic Claude |
-| `@aibou-dev/adapter-openai` | Companion adapter for OpenAI |
-| `@aibou-dev/adapter-ollama` | Companion adapter for local LLMs |
-| `@aibou-dev/plugin-minesweeper` | Minesweeper plugin (demo) |
-| `@aibou-dev/plugin-solitaire` | Solitaire plugin (demo) |
+| Package | Description | Status |
+|---|---|---|
+| `@aibou-dev/core` | Protocol types, runtime, memory engine | available |
+| `@aibou-dev/bunshin` | PNGTuber avatar engine | available |
+| `@aibou-dev/adapter-claude` | Companion adapter for Anthropic Claude | available |
+| `@aibou-dev/plugin-minesweeper` | Minesweeper game plugin | available |
 
 ---
 
@@ -206,16 +203,30 @@ const MyCompanion: PersonaConfig = {
 
 ## Avatar overlay (bunshin)
 
-`@aibou-dev/bunshin` renders a floating avatar over any game window.
+`@aibou-dev/bunshin` renders PNGTuber-style avatar sprites that react to companion emotions.
 
 ```bash
 npm install @aibou-dev/bunshin
 ```
 
-It consumes the `emotion` field from `CompanionResponse` to drive
-expressions and animations. Supports PNGTuber (two-image) and VRM (3D) formats.
+```typescript
+import { BunshinAvatar } from "@aibou-dev/bunshin"
 
-→ See [bunshin docs](https://github.com/aibou-dev/bunshin) for setup.
+const avatar = new BunshinAvatar(container, {
+  name: "nagi",
+  size: 96,
+  assetBasePath: "/assets/nagi",
+})
+
+// Update expression from CompanionResponse.emotion
+avatar.setEmotion("happy")
+
+// Animate mouth during speech
+avatar.startTalking(2000)
+```
+
+Each emotion maps to a pair of PNG sprites (`{emotion}.png` + `{emotion}_talking.png`).
+See [`packages/bunshin/src/assets/README.md`](./packages/bunshin/src/assets/README.md) for the full asset spec.
 
 ---
 
@@ -238,7 +249,7 @@ If it speaks TypeScript types and honours the contract, it works.
 
 ## Name
 
-**aibou** (相棒) — Japanese for *companion*, *partner*, *the other half of a duo*.  
+**aibou** (相棒) — Japanese for *companion*, *partner*, *the other half of a duo*.
 **bunshin** (分身) — Japanese for *alter ego*, *avatar*, *one's other self*.
 
 ---
