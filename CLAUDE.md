@@ -11,6 +11,7 @@ npm install          # install all workspace dependencies
 npm run build        # build all packages
 npm run typecheck    # run tsc --noEmit across all packages
 npm test             # run tests
+cd packages/demo && npx playwright test  # e2e tests
 ```
 
 ## Code style
@@ -23,6 +24,10 @@ npm test             # run tests
 ## Architecture
 - `packages/core/` — Protocol types, runtime, memory engine (@aibou-dev/core)
 - `packages/core/personas/` — Built-in persona configs
+- `packages/plugin-minesweeper/` — Minesweeper game engine + aibou plugin
+- `packages/adapter-claude/` — Claude API companion adapter
+- `packages/bunshin/` — SVG avatar engine (PNGTuber-style, 6 emotions)
+- `packages/demo/` — Browser demo (Vite, Playwright e2e tests)
 - `docs/SPEC.md` — Full protocol specification (source of truth for types)
 - `docs/PERSONA.md` — Nagi demo companion persona definition
 
