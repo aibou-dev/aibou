@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+*.Zone.Identifier
+
+# Internal design docs (not for public distribution)
+docs/PERSONA.md
+.env
+.env.*
+!.env.example
+
+# Avatar image assets (user-provided)
+packages/bunshin/src/assets/nagi/
