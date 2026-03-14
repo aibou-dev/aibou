@@ -187,8 +187,16 @@ function renderBoard(state: MinesweeperState) {
 }
 
 function addMessage(text: string, type: "companion" | "system") {
+  // Demote previous "latest" messages to "past"
+  if (type === "companion") {
+    messagesEl.querySelectorAll(".message.companion.latest").forEach(el => {
+      el.classList.remove("latest")
+      el.classList.add("past")
+    })
+  }
+
   const el = document.createElement("div")
-  el.className = `message ${type}`
+  el.className = `message ${type}${type === "companion" ? " latest" : ""}`
   el.textContent = text
   messagesEl.appendChild(el)
   messagesEl.scrollTop = messagesEl.scrollHeight

@@ -28,9 +28,9 @@
 
     #app {
       display: flex;
-      gap: 32px;
+      gap: 0;
       align-items: flex-start;
-      max-width: 900px;
+      max-width: 960px;
     }
 
     /* Board */
@@ -117,28 +117,46 @@
     .cell[data-n="7"] { color: #888; }
     .cell[data-n="8"] { color: #ccc; }
 
-    /* Companion panel */
-    #companion {
-      flex: 1;
-      min-width: 280px;
-      max-width: 340px;
-    }
-
-    #companion-header {
+    /* Companion bridge — avatar sits between board and messages */
+    #companion-bridge {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
-      margin-bottom: 16px;
+      padding: 0 8px;
+      margin-top: 36px;
+      position: relative;
     }
 
     #companion-avatar {
       flex-shrink: 0;
+      /* Nagi faces left toward the board */
+      transform: scaleX(-1);
     }
 
     #companion-emotion {
-      font-size: 11px;
-      color: #666;
+      font-size: 10px;
+      color: #555;
+      margin-top: 2px;
+      transform: scaleX(-1);
+    }
+
+    /* Gaze line — subtle visual connection to the board */
+    #companion-bridge::before {
+      content: "";
+      position: absolute;
+      left: -8px;
+      top: 60px;
+      width: 12px;
+      height: 1px;
+      background: linear-gradient(to left, rgba(124, 92, 191, 0.3), transparent);
+    }
+
+    /* Companion chat panel */
+    #companion {
+      flex: 1;
+      min-width: 260px;
+      max-width: 320px;
+      padding-left: 16px;
     }
 
     #messages {
@@ -156,11 +174,25 @@
       font-size: 13px;
       line-height: 1.5;
       animation: fadeIn 0.3s ease;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
 
     .message.companion {
       background: #1a1a2e;
       border-left: 3px solid #7c5cbf;
+    }
+
+    /* Older messages fade out, latest stays prominent */
+    .message.companion.past {
+      opacity: 0.4;
+      transform: scale(0.97);
+      border-left-color: #3a3050;
+    }
+
+    .message.companion.latest {
+      opacity: 1;
+      border-left-color: #9d7de8;
+      background: #1e1a32;
     }
 
     .message.system {
@@ -240,11 +272,11 @@
       </div>
       <div id="board"></div>
     </div>
+    <div id="companion-bridge">
+      <div id="companion-avatar"></div>
+      <div id="companion-emotion">connected</div>
+    </div>
     <div id="companion">
-      <div id="companion-header">
-        <div id="companion-avatar"></div>
-        <div id="companion-emotion">connected</div>
-      </div>
       <div id="messages"></div>
       <div id="player-input">
         <input type="text" placeholder="Talk to Nagi..." id="chat-input" />
