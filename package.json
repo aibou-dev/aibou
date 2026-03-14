@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "build": "npm run build -w packages/core && npm run build -w packages/adapter-claude -w packages/bunshin -w packages/plugin-minesweeper && npm run build -w packages/demo",
-    "typecheck": "npm run typecheck --workspaces",
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "test": "npm test --workspaces --if-present",
     "changeset": "changeset",
     "version": "changeset version",
