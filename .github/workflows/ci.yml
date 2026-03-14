@@ -41,3 +41,28 @@ jobs:
 
       - name: Run e2e tests
         run: cd packages/demo && npx playwright test --grep-invert "Screenshots"
+
+  deploy:
+    needs: [build, e2e]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Deploy to GitHub Pages
+        run: |
+          cd packages/demo
+          npx gh-pages -d dist -u "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
