@@ -62,8 +62,86 @@ function createLocalCompanion() {
     ],
   }
 
+  // Player chat responses — keyword-matched for common questions
+  const chatResponses: { pattern: RegExp; replies: string[]; emotion: CompanionResponse["emotion"] }[] = [
+    {
+      pattern: /where.*(open|start|click|begin|first)|first.*(move|click|open)|what.*(open|click)/i,
+      replies: [
+        "Corners are usually a safe bet to start. Less neighbors, more room to chain.",
+        "I'd try a corner. Worst case it's a number, best case it opens up a big area.",
+        "Anywhere works for the first click — you're guaranteed safe. But corners give you the best chain potential.",
+      ],
+      emotion: "thinking",
+    },
+    {
+      pattern: /safe|danger|risky|mine.*here|flag.*this/i,
+      replies: [
+        "Hard to say for sure... look at the numbers around it and count the flags.",
+        "I'm not confident either way. muzukashii...",
+        "Trust the numbers. If the math doesn't add up to a mine, it's probably safe.",
+      ],
+      emotion: "thinking",
+    },
+    {
+      pattern: /help|stuck|hint|what.*do|suggest|advice/i,
+      replies: [
+        "Look for cells where the numbers already match the adjacent flags. Those neighbors are safe to open.",
+        "Try the edges — cells with fewer neighbors are easier to reason about.",
+        "Any spots where a number touches exactly that many unrevealed cells? Those are all mines — flag them.",
+      ],
+      emotion: "curious",
+    },
+    {
+      pattern: /flag|should.*flag/i,
+      replies: [
+        "If the numbers point to it, flag it. Trust your logic.",
+        "When in doubt, don't flag — come back to it after revealing more.",
+      ],
+      emotion: "thinking",
+    },
+    {
+      pattern: /good|nice|great|awesome|cool/i,
+      replies: [
+        "Right? That was a solid move.",
+        "We're getting somewhere. Keep it up.",
+      ],
+      emotion: "happy",
+    },
+    {
+      pattern: /scared|nervous|afraid|worry/i,
+      replies: [
+        "Yeah, this part is tense. But we've made it this far.",
+        "Take a breath. The board isn't going anywhere.",
+        "I'm a little nervous too, honestly.",
+      ],
+      emotion: "worried",
+    },
+  ]
+
+  const defaultChatReplies = [
+    "Hmm, I'm not sure about that. Let's just focus on the board.",
+    "Interesting thought. What are you seeing that I'm not?",
+    "I hear you. What's your next move?",
+  ]
+
   return {
-    react(event: GameStateEvent): CompanionResponse {
+    react(event: GameStateEvent, playerMessage?: string): CompanionResponse {
+      // Handle player chat with keyword matching
+      if (event.companion.trigger === "player_request" && playerMessage) {
+        for (const { pattern, replies, emotion } of chatResponses) {
+          if (pattern.test(playerMessage)) {
+            return {
+              message: replies[Math.floor(Math.random() * replies.length)],
+              emotion,
+            }
+          }
+        }
+        return {
+          message: defaultChatReplies[Math.floor(Math.random() * defaultChatReplies.length)],
+          emotion: "curious",
+        }
+      }
+
       const state = event.state.rawBoard as MinesweeperState | undefined
       let category = "default"
       let emotion: CompanionResponse["emotion"] = "neutral"
@@ -217,10 +295,10 @@ function setEmotion(emotion: CompanionResponse["emotion"]) {
 
 // ─── Companion integration ─────────────────────────────────
 
-function companionReact(event: GameStateEvent) {
+function companionReact(event: GameStateEvent, playerMessage?: string) {
   if (!event.companion.shouldReact) return
 
-  const response = localResponses.react(event)
+  const response = localResponses.react(event, playerMessage)
   addMessage(response.message, "companion")
   setEmotion(response.emotion)
 
@@ -296,12 +374,13 @@ function handleChat() {
   if (!text) return
 
   chatInput.value = ""
+  addMessage(text, "system")
   history.push({ role: "player", message: text, timestamp: Date.now() })
 
-  // Create a player_request event
+  // Create a player_request event, passing the message for context
   const event = MinesweeperPlugin.createEvent(currentState, "player_request")
   event.companion.shouldReact = true
-  companionReact(event)
+  companionReact(event, text)
 }
 
 chatSend.addEventListener("click", handleChat)
