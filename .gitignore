@@ -6,6 +6,7 @@ dist/
 
 # Internal design docs (not for public distribution)
 docs/PERSONA.md
+docs/SPEC.md
 .env
 .env.*
 !.env.example

@@ -28,14 +28,13 @@ cd packages/demo && npx playwright test  # e2e tests
 - `packages/adapter-claude/` — Claude API companion adapter
 - `packages/bunshin/` — SVG avatar engine (PNGTuber-style, 6 emotions)
 - `packages/demo/` — Browser demo (Vite, Playwright e2e tests)
-- `docs/SPEC.md` — Full protocol specification (source of truth for types)
-- `docs/PERSONA.md` — Nagi demo companion persona definition
+- `docs/PERSONA.md` — Nagi demo companion persona definition (gitignored, local only)
 
 ## Key conventions
-- Types in `packages/core/src/types.ts` mirror SPEC.md exactly
+- Types in `packages/core/src/types.ts` are the protocol spec (source of truth)
 - Persona configs implement `PersonaConfig` from types
 - Game plugins implement `AibouPlugin` interface
 - Companion adapters implement `AibouCompanionAdapter` interface
 
 ## Spec
-@docs/SPEC.md
+@packages/core/src/types.ts

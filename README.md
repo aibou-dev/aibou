@@ -232,9 +232,9 @@ See [`packages/bunshin/src/assets/README.md`](./packages/bunshin/src/assets/READ
 
 ## Spec
 
-The full protocol specification lives in [`docs/SPEC.md`](./docs/SPEC.md).
+The protocol is defined as TypeScript types in [`packages/core/src/types.ts`](./packages/core/src/types.ts).
 
-aibou is intentionally minimal. The spec defines interfaces, not implementations.
+aibou is intentionally minimal. The types define interfaces, not implementations.
 If it speaks TypeScript types and honours the contract, it works.
 
 ---

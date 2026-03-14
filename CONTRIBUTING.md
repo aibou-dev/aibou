@@ -39,7 +39,7 @@ packages/
 4. npm に `aibou-plugin-<game>` として公開する
 5. README の Community plugins セクションに PR を送る
 
-詳細は [`docs/SPEC.md`](./docs/SPEC.md) のプラグインインターフェースを参照してください。
+詳細は [`packages/core/src/types.ts`](./packages/core/src/types.ts) のプラグインインターフェースを参照してください。
 
 ## AI アダプターの作り方
 
