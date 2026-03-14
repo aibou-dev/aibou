@@ -1,0 +1,26 @@
+{
+  "name": "@aibou-dev/core",
+  "version": "0.1.0",
+  "description": "Protocol types, runtime, and memory engine for aibou",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./personas": {
+      "types": "./dist/personas/index.d.ts",
+      "import": "./dist/personas/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "MIT"
+}
