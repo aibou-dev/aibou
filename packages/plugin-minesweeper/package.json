@@ -21,5 +21,22 @@
   "dependencies": {
     "@aibou-dev/core": "0.1.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aibou-dev/aibou.git",
+    "directory": "packages/plugin-minesweeper"
+  },
+  "homepage": "https://github.com/aibou-dev/aibou/tree/main/packages/plugin-minesweeper",
+  "author": "aibou-dev contributors",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "aibou",
+    "minesweeper",
+    "game-plugin",
+    "ai-companion",
+    "puzzle-game"
+  ]
 }

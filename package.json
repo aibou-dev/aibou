@@ -7,8 +7,18 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "typecheck": "npm run typecheck --workspaces",
-    "test": "npm test --workspaces --if-present"
+    "test": "npm test --workspaces --if-present",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish"
   },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aibou-dev/aibou.git"
+  },
+  "homepage": "https://aibou.dev",
+  "author": "aibou-dev contributors",
   "engines": {
     "node": ">=20"
   },

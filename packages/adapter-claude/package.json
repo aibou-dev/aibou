@@ -22,5 +22,23 @@
     "@aibou-dev/core": "0.1.0",
     "@anthropic-ai/sdk": "^0.39.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aibou-dev/aibou.git",
+    "directory": "packages/adapter-claude"
+  },
+  "homepage": "https://github.com/aibou-dev/aibou/tree/main/packages/adapter-claude",
+  "author": "aibou-dev contributors",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "aibou",
+    "claude",
+    "anthropic",
+    "ai-companion",
+    "llm-adapter",
+    "companion-adapter"
+  ]
 }
