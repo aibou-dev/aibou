@@ -28,14 +28,20 @@
 
     #app {
       display: flex;
-      gap: 0;
-      align-items: flex-start;
-      max-width: 960px;
+      gap: 24px;
+      align-items: stretch;
+      max-width: 1024px;
+      width: 100%;
     }
 
-    /* Board */
+    /* Board — 55% */
     #board-container {
+      flex: 55;
       flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     #controls {
@@ -117,18 +123,27 @@
     .cell[data-n="7"] { color: #888; }
     .cell[data-n="8"] { color: #ccc; }
 
-    /* Companion bridge — avatar sits between board and messages */
-    #companion-bridge {
+    /* Right panel — 45% */
+    #companion-panel {
+      flex: 45;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 8px;
-      margin-top: 36px;
-      position: relative;
+      min-width: 280px;
+      max-width: 400px;
+    }
+
+    /* Avatar section */
+    #companion-avatar-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 16px;
     }
 
     #companion-avatar {
       flex-shrink: 0;
+      filter: drop-shadow(0 0 18px rgba(124, 92, 191, 0.35)) drop-shadow(0 0 40px rgba(90, 130, 220, 0.18));
     }
 
     #companion-avatar .bunshin-face {
@@ -141,32 +156,15 @@
       margin-top: 2px;
     }
 
-    /* Gaze line — subtle visual connection to the board */
-    #companion-bridge::before {
-      content: "";
-      position: absolute;
-      left: -8px;
-      top: 60px;
-      width: 12px;
-      height: 1px;
-      background: linear-gradient(to left, rgba(124, 92, 191, 0.3), transparent);
-    }
-
-    /* Companion chat panel */
-    #companion {
-      flex: 1;
-      min-width: 260px;
-      max-width: 320px;
-      padding-left: 16px;
-    }
-
+    /* Messages */
     #messages {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      max-height: 400px;
+      max-height: 320px;
       overflow-y: auto;
       padding-right: 8px;
+      width: 100%;
     }
 
     .message {
@@ -174,8 +172,7 @@
       border-radius: 8px;
       font-size: 13px;
       line-height: 1.5;
-      animation: fadeIn 0.3s ease;
-      transition: opacity 0.4s ease, transform 0.4s ease;
+      transition: opacity 0.4s ease, transform 0.4s ease, font-size 0.4s ease;
     }
 
     .message.companion {
@@ -183,19 +180,27 @@
       border-left: 3px solid #7c5cbf;
     }
 
-    /* Older messages fade out, latest stays prominent */
+    /* Past companion messages — faded */
     .message.companion.past {
-      opacity: 0.4;
+      opacity: 0.45;
       transform: scale(0.97);
       border-left-color: #3a3050;
+      font-size: 12px;
     }
 
+    /* Latest companion message — prominent */
     .message.companion.latest {
       opacity: 1;
       border-left-color: #9d7de8;
       background: #1e1a32;
+      font-size: 15px;
+      color: #f0eaf8;
+      border-left-width: 4px;
+      padding: 12px 16px;
+      animation: fadeInLatest 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
+    /* Player messages */
     .message.system {
       background: #12121e;
       color: #888;
@@ -205,10 +210,24 @@
       text-align: right;
     }
 
+    .message.system.past {
+      opacity: 0.45;
+      font-size: 11px;
+    }
+
+    .message.system.latest {
+      opacity: 1;
+      color: #bbb;
+      border-right-color: #666;
+      animation: fadeInLatest 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Input */
     #player-input {
       display: flex;
       gap: 8px;
       margin-top: 12px;
+      width: 100%;
     }
 
     #player-input input {
@@ -236,8 +255,8 @@
       font-size: 12px;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
+    @keyframes fadeInLatest {
+      from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -261,6 +280,17 @@
       font-family: inherit;
       text-decoration: underline;
     }
+
+    /* Footer */
+    #protocol-footer {
+      margin-top: 32px;
+      text-align: center;
+      font-size: 11px;
+      color: #e0e0e0;
+      opacity: 0.35;
+      line-height: 1.8;
+      letter-spacing: 0.5px;
+    }
   </style>
 </head>
 <body>
@@ -274,17 +304,21 @@
       </div>
       <div id="board"></div>
     </div>
-    <div id="companion-bridge">
-      <div id="companion-avatar"></div>
-      <div id="companion-emotion">connected</div>
-    </div>
-    <div id="companion">
+    <div id="companion-panel">
+      <div id="companion-avatar-section">
+        <div id="companion-avatar"></div>
+        <div id="companion-emotion">connected</div>
+      </div>
       <div id="messages"></div>
       <div id="player-input">
         <input type="text" placeholder="Talk to Nagi..." id="chat-input" />
-        <button id="chat-send">→</button>
+        <button id="chat-send">&rarr;</button>
       </div>
     </div>
+  </div>
+  <div id="protocol-footer">
+    Nagi runs on @aibou-dev/core — an open protocol.<br />
+    Swap the game. Swap the AI. Swap the character.
   </div>
   <script type="module" src="/src/main.ts"></script>
 </body>

@@ -279,7 +279,7 @@ const newGameBtn = document.getElementById("new-game") as HTMLButtonElement
 
 const avatar = new BunshinAvatar(avatarEl, {
   name: "nagi",
-  size: 96,
+  size: 192,
   accentColor: "#7c5cbf",
   animate: true,
   assetBasePath: "/assets/nagi",
@@ -337,16 +337,14 @@ function renderBoard(state: MinesweeperState) {
 }
 
 function addMessage(text: string, type: "companion" | "system") {
-  // Demote previous "latest" messages to "past"
-  if (type === "companion") {
-    messagesEl.querySelectorAll(".message.companion.latest").forEach(el => {
-      el.classList.remove("latest")
-      el.classList.add("past")
-    })
-  }
+  // Demote previous "latest" messages of the same type to "past"
+  messagesEl.querySelectorAll(`.message.${type}.latest`).forEach(el => {
+    el.classList.remove("latest")
+    el.classList.add("past")
+  })
 
   const el = document.createElement("div")
-  el.className = `message ${type}${type === "companion" ? " latest" : ""}`
+  el.className = `message ${type} latest`
   el.textContent = text
   messagesEl.appendChild(el)
   messagesEl.scrollTop = messagesEl.scrollHeight
