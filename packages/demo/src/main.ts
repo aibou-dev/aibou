@@ -121,13 +121,84 @@ function createLocalCompanion() {
   const defaultChatReplies = [
     "Hmm, I'm not sure about that. Let's just focus on the board.",
     "Interesting thought. What are you seeing that I'm not?",
-    "I hear you. What's your next move?",
+    "I hear you. What do you think?",
   ]
+
+  // Post-game chat — reflective, no board-state assumptions
+  const postGameLostChat: { pattern: RegExp; replies: string[]; emotion: CompanionResponse["emotion"] }[] = [
+    {
+      pattern: /why|how|what happened/i,
+      replies: [
+        "That area was ambiguous — no way to know for sure. Don't blame yourself.",
+        "Sometimes the board just doesn't give you enough information. That was one of those.",
+      ],
+      emotion: "thinking",
+    },
+    {
+      pattern: /again|rematch|one more|retry|new/i,
+      replies: [
+        "Let's go. Hit New Game — I have a good feeling about the next one.",
+        "Rematch? I'm in. We'll get it this time.",
+      ],
+      emotion: "excited",
+    },
+  ]
+
+  const postGameWonChat: { pattern: RegExp; replies: string[]; emotion: CompanionResponse["emotion"] }[] = [
+    {
+      pattern: /again|rematch|one more|retry|new/i,
+      replies: [
+        "Another round? Let's keep the streak going.",
+        "I'm down. Let's see if we can do it even faster.",
+      ],
+      emotion: "excited",
+    },
+  ]
+
+  const defaultPostGameReplies: Record<string, { replies: string[]; emotion: CompanionResponse["emotion"] }> = {
+    lost: {
+      replies: [
+        "Yeah... that was rough. Want to go again?",
+        "These things happen. Ready for another round?",
+        "I know. Take a second, then let's try again.",
+      ],
+      emotion: "worried",
+    },
+    won: {
+      replies: [
+        "Still buzzing from that win. Another one?",
+        "That was clean. Want to push our luck?",
+        "yatta! Go again whenever you're ready.",
+      ],
+      emotion: "happy",
+    },
+  }
 
   return {
     react(event: GameStateEvent, playerMessage?: string): CompanionResponse {
       // Handle player chat with keyword matching
       if (event.companion.trigger === "player_request" && playerMessage) {
+        const phase = event.state.phase
+
+        // Post-game conversation — different tone, no board advice
+        if (phase === "lost" || phase === "won") {
+          const postPool = phase === "lost" ? postGameLostChat : postGameWonChat
+          for (const { pattern, replies, emotion } of postPool) {
+            if (pattern.test(playerMessage)) {
+              return {
+                message: replies[Math.floor(Math.random() * replies.length)],
+                emotion,
+              }
+            }
+          }
+          const defaults = defaultPostGameReplies[phase]
+          return {
+            message: defaults.replies[Math.floor(Math.random() * defaults.replies.length)],
+            emotion: defaults.emotion,
+          }
+        }
+
+        // In-game conversation
         for (const { pattern, replies, emotion } of chatResponses) {
           if (pattern.test(playerMessage)) {
             return {
