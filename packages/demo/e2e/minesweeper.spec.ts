@@ -10,8 +10,8 @@ test.describe("Minesweeper + Nagi companion", () => {
     const cells = page.locator("#board .cell")
     await expect(cells).toHaveCount(81)
 
-    // Companion is connected
-    await expect(page.locator("#companion-name")).toHaveText("Nagi")
+    // Bunshin avatar is rendered with name
+    await expect(page.locator(".bunshin-name")).toHaveText("nagi")
 
     // Nagi greets on game start
     const messages = page.locator("#messages .message.companion")

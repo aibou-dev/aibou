@@ -1,9 +1,8 @@
 import { MinesweeperGame } from "@aibou-dev/plugin-minesweeper"
 import type { MinesweeperState } from "@aibou-dev/plugin-minesweeper"
 import { MinesweeperPlugin } from "@aibou-dev/plugin-minesweeper"
-import { NagiPersona } from "@aibou-dev/core/personas"
+import { BunshinAvatar } from "@aibou-dev/bunshin"
 import type {
-  CompanionMemory,
   CompanionResponse,
   GameStateEvent,
   ConversationTurn,
@@ -122,9 +121,19 @@ const boardEl = document.getElementById("board") as HTMLDivElement
 const statusEl = document.getElementById("status") as HTMLSpanElement
 const messagesEl = document.getElementById("messages") as HTMLDivElement
 const emotionEl = document.getElementById("companion-emotion") as HTMLDivElement
+const avatarEl = document.getElementById("companion-avatar") as HTMLDivElement
 const chatInput = document.getElementById("chat-input") as HTMLInputElement
 const chatSend = document.getElementById("chat-send") as HTMLButtonElement
 const newGameBtn = document.getElementById("new-game") as HTMLButtonElement
+
+// ─── Bunshin avatar ───────────────────────────────────────
+
+const avatar = new BunshinAvatar(avatarEl, {
+  name: "nagi",
+  size: 96,
+  accentColor: "#7c5cbf",
+  animate: true,
+})
 
 // ─── Rendering ─────────────────────────────────────────────
 
@@ -195,6 +204,7 @@ function setEmotion(emotion: CompanionResponse["emotion"]) {
     thinking: "thinking ...",
   }
   emotionEl.textContent = labels[emotion ?? "neutral"] ?? "neutral"
+  avatar.setEmotion(emotion ?? "neutral")
 }
 
 // ─── Companion integration ─────────────────────────────────

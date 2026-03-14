@@ -12,6 +12,7 @@
     "test:headed": "playwright test --headed"
   },
   "dependencies": {
+    "@aibou-dev/bunshin": "0.1.0",
     "@aibou-dev/core": "0.1.0",
     "@aibou-dev/plugin-minesweeper": "0.1.0"
   },
