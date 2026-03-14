@@ -140,7 +140,7 @@ function createLocalCompanion() {
         "Let's go. Hit New Game — I have a good feeling about the next one.",
         "Rematch? I'm in. We'll get it this time.",
       ],
-      emotion: "excited",
+      emotion: "happy",
     },
   ]
 
@@ -151,7 +151,7 @@ function createLocalCompanion() {
         "Another round? Let's keep the streak going.",
         "I'm down. Let's see if we can do it even faster.",
       ],
-      emotion: "excited",
+      emotion: "happy",
     },
   ]
 
@@ -222,7 +222,7 @@ function createLocalCompanion() {
         emotion = "curious"
       } else if (event.state.phase === "won") {
         category = "won"
-        emotion = "excited"
+        emotion = "happy"
       } else if (event.state.phase === "lost") {
         category = "lost"
         emotion = "worried"
@@ -235,7 +235,7 @@ function createLocalCompanion() {
           emotion = "thinking"
         } else if (state.lastAction.chainSize && state.lastAction.chainSize >= 5) {
           category = "chain_reveal"
-          emotion = "excited"
+          emotion = "happy"
         } else {
           // Check progress
           const safeCells = state.rows * state.cols - state.totalMines
@@ -282,6 +282,7 @@ const avatar = new BunshinAvatar(avatarEl, {
   size: 96,
   accentColor: "#7c5cbf",
   animate: true,
+  assetBasePath: "/assets/nagi",
 })
 
 // ─── Rendering ─────────────────────────────────────────────
@@ -372,6 +373,10 @@ function companionReact(event: GameStateEvent, playerMessage?: string) {
   const response = localResponses.react(event, playerMessage)
   addMessage(response.message, "companion")
   setEmotion(response.emotion)
+
+  // Trigger talking animation proportional to message length
+  const talkDuration = Math.min(Math.max(response.message.length * 40, 1000), 4000)
+  avatar.startTalking(talkDuration)
 
   history.push({
     role: "companion",

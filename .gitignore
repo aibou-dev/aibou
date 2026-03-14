@@ -6,3 +6,6 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Avatar image assets (user-provided)
+packages/bunshin/src/assets/nagi/
